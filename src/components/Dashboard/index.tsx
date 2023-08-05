@@ -1,4 +1,4 @@
-import React, { useState, useRef, Dispatch, SetStateAction, ChangeEvent } from "react";
+import React, { useState, Dispatch, SetStateAction, ChangeEvent } from "react";
 import {
   Container,
   FlexPublish,
@@ -22,6 +22,8 @@ import {
   DeleteAllButton,
   ButtonsContainer,
   UserLink,
+  DashTh,
+  RegularTd,
 } from "./styles";
 import Percentage from "../Percentage";
 import Publish from "../Publish";
@@ -38,7 +40,7 @@ type FormProps = {
   handleCloseModal: () => void,
 }
 
-const AddFeedbackForm = ({userIndex, users, setUsers, handleCloseModal}: FormProps) => {
+const AddFeedbackForm = ({ userIndex, users, setUsers, handleCloseModal }: FormProps) => {
   const user = users[userIndex];
   const [formValues, setformValues] = useState({
     description: user.feedBack.description,
@@ -65,20 +67,20 @@ const AddFeedbackForm = ({userIndex, users, setUsers, handleCloseModal}: FormPro
     })
     handleCloseModal();
   }
-  
+
   return (
     <FormContainer onSubmit={handleSubmit}>
       <FormContent>
         <Label htmlFor="description">Description:</Label>
-        <TextArea id="description" name="description" rows={4} value={formValues.description || ""} onChange={handleFormChange}/>
+        <TextArea id="description" name="description" rows={4} value={formValues.description || ""} onChange={handleFormChange} />
 
         <Label>Accepted:</Label>
         <RadioContainer>
-          <RadioInput type="radio" id="yes" name="accepted" value="yes" checked={formValues.accepted === true} onChange={handleFormChange}/>
+          <RadioInput type="radio" id="yes" name="accepted" value="yes" checked={formValues.accepted === true} onChange={handleFormChange} />
           <label htmlFor="yes">Yes</label>
         </RadioContainer>
         <RadioContainer>
-          <RadioInput type="radio" id="no" name="accepted" value="no" checked={formValues.accepted === false} onChange={handleFormChange}/>
+          <RadioInput type="radio" id="no" name="accepted" value="no" checked={formValues.accepted === false} onChange={handleFormChange} />
           <label htmlFor="no">No</label>
         </RadioContainer>
       </FormContent>
@@ -87,7 +89,7 @@ const AddFeedbackForm = ({userIndex, users, setUsers, handleCloseModal}: FormPro
     </FormContainer>
   );
 };
-  
+
 
 const usersMock: User[] = [
   {
@@ -144,7 +146,7 @@ const usersMock: User[] = [
   },
 ];
 
-const Dashboard = () => {
+export default function Dashboard() {
   const [users, setUsers] = useState(usersMock)
   const [sortField, setSortField] = useState<keyof User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -162,9 +164,7 @@ const Dashboard = () => {
   const handleCloseModal = () => setIsModalOpen(false);
 
   const reviewers = ["Tomas de Matos", "Caterina Aracil", "Martin Russo"];
-
   const seats = ["Not set", "Shadowing", "Internship", "Internal Project"];
-
   const statusOptions = [100, 80, 50, 25];
 
   const handleClick = (value: string, name: string) => {
@@ -232,21 +232,21 @@ const Dashboard = () => {
         />
         <DeleteAllButton
           onClick={handleDeleteAllUsers}
-          >Delete all</DeleteAllButton>
+        >Delete all</DeleteAllButton>
       </ButtonsContainer>
       <StyleDashboard>
         <StyleTable>
           <thead>
             <StyleTr bold={true}>
-              <th onClick={() => handleSort("name")} style={{color: '#6229FF'}}>User</th>
-              <th style={{color: '#6229FF'}}>E-mail</th>
-              <th style={{color: '#6229FF'}}>Phone</th>
-              <th onClick={() => handleSort("challenge")} style={{color: '#6229FF'}}>Challenge</th>
-              <th onClick={() => handleSort("revisor")} style={{color: '#6229FF'}}>Reviewer</th>
-              <th style={{color: '#6229FF'}}>Feedback</th>
-              <th onClick={() => handleSort("seats")} style={{color: '#6229FF'}}>Seats</th>
+              <DashTh onClick={() => handleSort("name")} >User</DashTh>
+              <DashTh >E-mail</DashTh>
+              <DashTh >Phone</DashTh>
+              <DashTh onClick={() => handleSort("challenge")} >Challenge</DashTh>
+              <DashTh onClick={() => handleSort("revisor")} >Reviewer</DashTh>
+              <DashTh >Feedback</DashTh>
+              <DashTh onClick={() => handleSort("seats")} >Seats</DashTh>
               <StyledTh>
-                <th style={{color: '#6229FF'}}> Status</th>
+                Status
                 <StyledSelectStatus
                   onChange={(event) =>
                     setStatusFilter(Number(event.target.value))
@@ -261,6 +261,7 @@ const Dashboard = () => {
                   ))}
                 </StyledSelectStatus>
               </StyledTh>
+              <DashTh>Actions</DashTh>
             </StyleTr>
           </thead>
           <tbody>
@@ -277,43 +278,47 @@ const Dashboard = () => {
                         : user.name}
                     </UserLink>
                   </td>
+
                   <StyleHoverTd
                     title={user.email}
-                    onClick={() => handleClick(user.email, "email")}                    
+                    onClick={() => handleClick(user.email, "email")}
                   >
                     {trimText(user.email)}
                   </StyleHoverTd>
+
                   <StyleHoverTd>+5411324234</StyleHoverTd>
+
                   <StyleHoverTd
                     onClick={handleLinkClick}
                     style={{ cursor: "pointer" }}
                   >
                     Crypto Challenge
                   </StyleHoverTd>
-                  <td>
+
+                  <RegularTd>
                     <FlexTdInside boolean={true}>
                       <StyledSelect
                         defaultValue={user.revisor || "Not set"}
                       >
-                        {["Not set", ...reviewers].map((revisor) => (
-                          <option key={revisor} value={revisor}>
-                            {revisor}
-                          </option>
-                        ))}
+                        <option value="Algo">
+                          Algo
+                        </option>
                       </StyledSelect>
                     </FlexTdInside>
-                  </td>
-                  <td>
+                  </RegularTd>
+
+                  <RegularTd>
                     <FlexTdInside status={user.status} boolean={true}>
                       {user.feedBack.description === ""
-                        ? <>Not set <Add disabled={!(user.status === "completed")} onClick={() =>{
-                          setModalContent(<AddFeedbackForm userIndex={index} users={users} setUsers={setUsers} handleCloseModal={handleCloseModal}/>)
+                        ? <>Not set <Add disabled={!(user.status === "completed")} onClick={() => {
+                          setModalContent(<AddFeedbackForm userIndex={index} users={users} setUsers={setUsers} handleCloseModal={handleCloseModal} />)
                           handleOpenModal()
                         }} /></>
                         : <>{trimText(user.feedBack.description)}</>}
                     </FlexTdInside>
-                  </td>
-                  <td>
+                  </RegularTd>
+
+                  <RegularTd>
                     <FlexTdInside status={user.status} boolean={true}>
                       <StyledSelect
                         defaultValue={user.seats || "Not set"}
@@ -326,23 +331,24 @@ const Dashboard = () => {
                         ))}
                       </StyledSelect>
                     </FlexTdInside>
-                  </td>
-                  <td>
+                  </RegularTd>
+
+                  <RegularTd>
                     <FlexTdInside boolean={false}>
                       <Percentage
                         status={user.status}
                         number={user.statusPercentage}
                       />
                     </FlexTdInside>
-                  </td>
-                  <td>
-                    <FlexPublish>
+                  </RegularTd>
+
+                  <RegularTd>
+                    <FlexTdInside boolean={false}>
                       <Publish number={user.status === "completed" ? 1 : 0} />
-                    </FlexPublish>
-                  </td>
-                  <td>
-                    <TrashCan onClick={() => handleDeleteUser(index)}/>
-                  </td>
+                      <TrashCan onClick={() => handleDeleteUser(index)} />
+                    </FlexTdInside>
+                  </RegularTd>
+
                 </StyleTr>
               ))}
           </tbody>
@@ -355,5 +361,3 @@ const Dashboard = () => {
     </Container>
   );
 }
-
-export default Dashboard;

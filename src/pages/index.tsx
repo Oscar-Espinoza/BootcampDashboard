@@ -14,8 +14,10 @@ import {
 } from "./styles";
 import Logo from "../assets/logo";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter()
   return (
     <FlexSides>
       <StyleLeftSide>
@@ -35,10 +37,8 @@ export default function Home() {
                 placeholder="Password"
               ></StyleInput>
               <StyleButtonContainer>
-                <StyleButton type="submit" disabled>
-                <Link href="/dashboard">
+                <StyleButton type="button" onClick={() => router.push('/dashboard')}>
                   Login
-                </Link>
                 </StyleButton>
               </StyleButtonContainer>
               <FlexRegister>

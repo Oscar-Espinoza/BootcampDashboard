@@ -43,6 +43,11 @@ export const StyleHoverTd = styled.td`
   }
 `;
 
+export const RegularTd = styled.td`
+  text-align: left !important;
+  padding: 0;
+`;
+
 export const PrincipalTitle = styled.h3`
   color: black;
   font-size: 30px;
@@ -55,9 +60,8 @@ export const PrincipalTitle = styled.h3`
 
 export const FlexTdInside = styled.div<TdBoolean>`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-
   ${({ boolean }) =>
     boolean &&
     `
@@ -72,12 +76,10 @@ FlexTdInside.defaultProps = {
   status: "completed",
 };
 
-export const FlexPublish = styled.td`
-`;
+export const FlexPublish = styled.td``;
 
 export const StyleTr = styled.tr<TableRowProps>`
   border-bottom: 1px solid #d9d9d9;
-  text-align: center;
   height: 50px;
   ${({ bold }) =>
     bold &&
@@ -86,10 +88,13 @@ export const StyleTr = styled.tr<TableRowProps>`
     `}
 `;
 
+export const DashTh = styled.th`
+  color: #6229ff;
+  text-align: left !important;
+`;
+
 export const StyledSelect = styled.select`
   border: none;
-  padding: 5px;
-  border-radius: 5px;
   font-size: 1em;
   color: #333;
   background-color: #fff;
@@ -115,7 +120,7 @@ export const ButtonsContainer = styled.div`
   margin-bottom: 10px;
   margin-top: 25px;
   width: 100%;
-`
+`;
 
 export const UserSearchBar = styled.input`
   width: 180px;
@@ -147,9 +152,9 @@ export const DeleteAllButton = styled.button`
 export const StyledTh = styled.th`
   display: flex;
   height: 50px;
-  justify-content: center;
   align-items: center;
-`
+  color: #6229ff;
+`;
 
 export const UserLink = styled(Link)`
   text-decoration: none;
@@ -158,7 +163,7 @@ export const UserLink = styled(Link)`
     color: ${({ theme }) => theme.colors.purple};
     cursor: pointer;
   }
-`
+`;
 
 //Feedback Form styles
 
@@ -218,11 +223,11 @@ export const SubmitButton = styled.button`
   padding: 12px;
   line-height: 21px;
   margin-top: 25px;
-  color: #6229FF;
+  color: #6229ff;
   background-color: rgba(98, 41, 255, 0.22);
-  cursor: pointer;  
+  cursor: pointer;
   transition: 0.3s;
-  &:hover{
-    background-color: ${({theme}) => theme.colors.purple_light};
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.purple_light};
   }
 `;
